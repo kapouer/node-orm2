@@ -351,7 +351,7 @@ describe("Validations", function() {
 		describe("properties.required = false", function() {
 			before(setup(false, false));
 
-			it("should save when properties are null", function(done) {
+			it("should save when properties are undefined", function(done) {
 				var john = new Person();
 
 				john.save(function (err) {
@@ -447,12 +447,13 @@ describe("Validations", function() {
 					should(Array.isArray(err));
 					should.equal(err.length, 3);
 
+					// `type` is a non enumerable undocumented property of `Error` in V8.
 					should.deepEqual(err[0], _.extend(new Error(),{
-						property: 'name', value: null, msg: 'required', type: 'validation'
+						property: 'name', value: undefined, msg: 'required', type: 'validation'
 					}));
 
 					should.deepEqual(err[1], _.extend(new Error(),{
-						property: 'name', value: null, msg: 'undefined', type: 'validation'
+						property: 'name', value: undefined, msg: 'undefined', type: 'validation'
 					}));
 
 					should.deepEqual(err[2], _.extend(new Error(),{
